@@ -1,19 +1,30 @@
 import { PropsWithChildren, createContext, useContext } from "react";
-import axios from "axios";
+import { axios, setToken } from "@/utils/axios";
 
 const internalHook = () => {
   const login = async (username: string, password: string) => {
     const endpoint =
       process.env.NEXT_PUBLIC_API_ENDPOINT ??
       "https://candidate.neversitup.com/todo";
-    const res = await axios.post(`${endpoint}/users/auth`, {
-      username,
-      password,
-    });
 
-    sessionStorage.setItem("token", res.data.token);
+    try {
+      const res = await axios.post(`${endpoint}/users/auth`, {
+        username,
+        password,
+      });
 
-    return res.data as { token: string };
+      sessionStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
+
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem("token");
+    setToken("");
   };
 
   const getToken = () => {
@@ -23,6 +34,7 @@ const internalHook = () => {
   return {
     login,
     getToken,
+    logout,
   };
 };
 
