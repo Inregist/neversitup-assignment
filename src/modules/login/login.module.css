@@ -1,0 +1,20 @@
+.wrapper{
+  /* center, full height, responsive */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.input{
+    display: block;
+}
