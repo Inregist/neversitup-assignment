@@ -1,7 +1,12 @@
 import { useState } from "react";
-import styles from "./login.module.css";
+import styles from "./Login.module.css";
+import { useAuth } from "../auth/AuthProvide";
+import { useRouter } from "next/router";
 
 export const LoginPage = () => {
+  const { login } = useAuth();
+  const router = useRouter();
+
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -12,9 +17,14 @@ export const LoginPage = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(form);
+    try{
+      await login(form.username, form.password);
+      // router.push("/");
+    }catch(err){
+      console.log(err);
+    }
   };
 
   return (
