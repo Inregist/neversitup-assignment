@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import { useAuth } from "../auth/AuthProvide";
 import { useRouter } from "next/router";
 
 export const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, getToken } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (getToken()) {
+      router.push("/");
+    }
+  }, []);
 
   const [form, setForm] = useState({
     username: "",
@@ -19,11 +25,9 @@ export const LoginPage = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try{
-      await login(form.username, form.password);
-      // router.push("/");
-    }catch(err){
-      console.log(err);
+    const res = await login(form.username, form.password);
+    if(res?.data?.token){
+      router.push("/");
     }
   };
 
