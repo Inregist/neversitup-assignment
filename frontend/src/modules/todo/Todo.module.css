@@ -1,0 +1,68 @@
+.wrapper {
+  padding: 102px 16px 32px 16px; /* 102 = 70+32*/
+  height: 100vh;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 20px 16px;
+}
+
+.todoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.todoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 300px;
+
+  padding: 20px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  border-color: var(--background-light-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.todoItem{
+  display: flex;
+  flex-direction: column;
+}
+
+.todoItem .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.todoItem .content {
+  display: flex;
+  flex: 1;
+  min-height: 120px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todoItem .action {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.todoItem .action button {
+  font-size: small;
+}
+
+.todoItem .action button.delete {
+  background-color: #dc3545;
+}
+
