@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { appConfig } from "./config/config";
+import router from "./modules";
 
 const app = express();
 
@@ -23,6 +24,8 @@ const hostname = appConfig().hostname;
 app.get("/", (req, res) => {
   res.send("ok");
 });
+
+app.use("/api", router);
 
 app.listen(port, hostname, 1, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
