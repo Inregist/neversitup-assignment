@@ -1,9 +1,22 @@
 import { NavBar } from "@/components/nav/NavBar";
+import { useAuth } from "@/modules/auth/AuthProvide";
 import { Todo } from "@/modules/todo/Todo";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home() {
+  const {
+    getToken,
+  } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <>

@@ -1,7 +1,14 @@
-import { PropsWithChildren, createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { axios, setToken } from "@/utils/axios";
 
-const internalHook = () => {
+const InternalHook = () => {
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+
   const login = async (username: string, password: string) => {
     try {
       const res = await axios.post(`/users/auth`, {
@@ -34,7 +41,7 @@ const internalHook = () => {
   };
 };
 
-const AuthContext = createContext<ReturnType<typeof internalHook> | undefined>(
+const AuthContext = createContext<ReturnType<typeof InternalHook> | undefined>(
   undefined
 );
 
@@ -47,6 +54,6 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const data = internalHook();
+  const data = InternalHook();
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
 };

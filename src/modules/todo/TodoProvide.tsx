@@ -1,14 +1,45 @@
-import { PropsWithChildren, createContext, useContext } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { axios, setToken } from "@/utils/axios";
+import { z } from "zod";
 
-type TodoInput = {
-  title: string;
-  description?: string;
-};
+export const todoInputSchema = z.object({
+  _id: z.string().optional(),
+  title: z.string(),
+  description: z.string().optional(),
+});
 
-const internalHook = () => {
+const todoSchema = todoInputSchema.extend({
+  _id: z.string(),
+});
+
+export type TodoInput = z.infer<typeof todoInputSchema>;
+export type Todo = z.infer<typeof todoSchema>;
+
+const InternalHook = () => {
+  const [todos, setTodos] = useState<Todo[]>();
+
+  useEffect(() => {
+    if (!axios.defaults.headers.common["Authorization"]) {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        setToken(token);
+      }
+    }
+
+    getAllTodo();
+  }, []);
+
   const getAllTodo = async () => {
-    return axios.get(`/todos`);
+    const res = await axios.get(`/todos`);
+    const data = res.data as Todo[];
+    setTodos(data);
+    return data;
   };
 
   const getTodo = async (id: string) => {
@@ -16,18 +47,22 @@ const internalHook = () => {
   };
 
   const createTodo = async (data: TodoInput) => {
-    return axios.post(`/todos`);
+    await axios.post(`/todos`, data);
+    getAllTodo();
   };
 
   const updateTodo = async (id: string, data: TodoInput) => {
-    return axios.put(`/todos/${id}`);
+    await axios.put(`/todos/${id}`, data);
+    getAllTodo();
   };
 
   const deleteTodo = async (id: string) => {
-    return axios.delete(`/todos/${id}`);
+    await axios.delete(`/todos/${id}`);
+    getAllTodo();
   };
 
   return {
+    todos,
     getAllTodo,
     getTodo,
     createTodo,
@@ -36,7 +71,7 @@ const internalHook = () => {
   };
 };
 
-const TodoContext = createContext<ReturnType<typeof internalHook> | undefined>(
+const TodoContext = createContext<ReturnType<typeof InternalHook> | undefined>(
   undefined
 );
 
@@ -49,6 +84,6 @@ export const useTodo = () => {
 };
 
 export const TodoProvider = ({ children }: PropsWithChildren) => {
-  const data = internalHook();
+  const data = InternalHook();
   return <TodoContext.Provider value={data}>{children}</TodoContext.Provider>;
 };
