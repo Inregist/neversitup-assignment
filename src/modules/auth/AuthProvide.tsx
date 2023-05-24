@@ -3,12 +3,8 @@ import { axios, setToken } from "@/utils/axios";
 
 const internalHook = () => {
   const login = async (username: string, password: string) => {
-    const endpoint =
-      process.env.NEXT_PUBLIC_API_ENDPOINT ??
-      "https://candidate.neversitup.com/todo";
-
     try {
-      const res = await axios.post(`${endpoint}/users/auth`, {
+      const res = await axios.post(`/users/auth`, {
         username,
         password,
       });

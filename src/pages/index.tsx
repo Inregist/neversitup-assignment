@@ -1,7 +1,10 @@
 import { NavBar } from "@/components/nav/NavBar";
+import { Todo } from "@/modules/todo/Todo";
 import Head from "next/head";
 
 export default function Home() {
+
+
   return (
     <>
       <Head>
@@ -12,6 +15,7 @@ export default function Home() {
       </Head>
       <main>
         <NavBar />
+        <Todo />
       </main>
     </>
   );
