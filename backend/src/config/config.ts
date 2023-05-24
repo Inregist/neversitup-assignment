@@ -19,4 +19,6 @@ const resolveString = (value: string | undefined, defaultValue: string) => {
 export const appConfig = () => ({
   port: resolveInt(process.env.PORT, 3001),
   hostname: resolveString(process.env.HOSTNAME, "localhost"),
+
+  jwtSecret: resolveString(process.env.JWT_SECRET, "secret"),
 });
