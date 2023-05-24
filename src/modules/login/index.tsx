@@ -34,7 +34,7 @@ export const LoginPage = () => {
   return (
     <div className={styles.wrapper}>
       <form className={styles.container} onSubmit={handleSubmit}>
-        <h1>Login</h1>
+        <h1 className={styles.title}>Login</h1>
         <input
           name="username"
           className={styles.input}
@@ -49,7 +49,7 @@ export const LoginPage = () => {
           placeholder="Password"
           onChange={handleChange}
         />
-        <button>Login</button>
+        <button className={styles.submit}>Login</button>
       </form>
     </div>
   );
