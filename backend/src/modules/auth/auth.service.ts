@@ -62,7 +62,10 @@ class AuthService {
       throw new Error("Invalid login");
     }
 
-    const token = jwt.sign({ id: user.id }, this.jwtSecret);
+    const token = jwt.sign(
+      { id: user.id, isAdmin: user.isAdmin },
+      this.jwtSecret
+    );
 
     return token;
   }

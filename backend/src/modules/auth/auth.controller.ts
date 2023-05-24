@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authService from "./auth.service";
-import { JWTRequest } from "../../middlewares/jwt";
+import { JWTRequest, authenticateToken } from "../../middlewares/jwt";
 
 const authRouter = Router();
 
@@ -23,9 +23,13 @@ authRouter.post("/login", async (req, res, next) => {
   }
 });
 
-authRouter.get("/me", async (req, res, next) => {
+authRouter.get("/me", authenticateToken, async (req: JWTRequest, res, next) => {
   try {
-    const result = await authService.me(1);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+    const result = await authService.me(userId);
     res.json(result);
   } catch (error) {
     next(error);
