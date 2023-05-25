@@ -20,6 +20,7 @@ dist
 # env
 .env
 .env.*
+!.env.example
 
 # prisma 
 prisma/sqlite
