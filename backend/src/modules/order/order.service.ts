@@ -8,7 +8,7 @@ import { orderItemInputSchema } from "../orderItem/orderItem.service";
 
 export const orderInputSchema = z.object({
   id: z.number().optional(),
-  userId: z.number(),
+  userId: z.number().optional(),
   products: z.array(orderItemInputSchema),
   status: z.string().default("pending").optional(),
   total: z.number().optional(),
@@ -17,6 +17,7 @@ export type OrderInput = z.infer<typeof orderInputSchema>;
 
 const orderStatusSchema = z.enum([
   "pending",
+  "cancelled",
   "paid",
   "delivering",
   "completed",
@@ -39,9 +40,8 @@ class OrderService {
     const validated = orderInputSchema.parse(order);
     const { products, ...validatedOrder } = validated;
 
-    const createdOrder = await this.orderRepository.create({
+    const createdOrder = await this.orderRepository.create(userId, {
       ...validatedOrder,
-      userId,
       total: products.reduce(
         (acc, cur) => acc + cur.unitPrice * cur.quantity,
         0

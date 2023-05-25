@@ -46,15 +46,15 @@ class OrderItemService {
   }
 
   async getOrderItem(id: number): Promise<OrderItem | null> {
-    const existingProduct = await this.orderItemRepository.findByUserWithId(id);
-    if (!existingProduct) {
-      throw new Error("Product not found");
+    const existingOrderItem = await this.orderItemRepository.findByUserWithId(id);
+    if (!existingOrderItem) {
+      throw new Error("OrderItem not found");
     }
 
     return this.orderItemRepository.findByUserWithId(id);
   }
 
-  async getProductList(): Promise<OrderItem[]> {
+  async getOrderItemList(): Promise<OrderItem[]> {
     return this.orderItemRepository.findAll();
   }
 }

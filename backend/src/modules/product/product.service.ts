@@ -26,6 +26,7 @@ class ProductService {
       .omit({
         id: true,
       })
+      .partial()
       .parse(product);
 
     this.getProduct(id);

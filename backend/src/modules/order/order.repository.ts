@@ -4,10 +4,11 @@ import prisma from "../../prisma";
 import { OrderInput } from "./order.service";
 
 export class OrderRepository implements Repository {
-  create(entity: Omit<OrderInput, "products">): Promise<Order> {
+  create(userId: number, entity: Omit<OrderInput, "products">): Promise<Order> {
     return prisma.order.create({
       data: {
         ...entity,
+        userId,
         status: entity.status ?? "pending",
         total: entity.total ?? 0,
       },
@@ -52,6 +53,13 @@ export class OrderRepository implements Repository {
           userId,
           id,
         },
+        include: {
+          OrderItem: {
+            include: {
+              product: true,
+            },
+          },
+        },
       }) ?? null;
     return product;
   }
@@ -62,6 +70,13 @@ export class OrderRepository implements Repository {
         where: {
           id,
         },
+        include: {
+          OrderItem: {
+            include: {
+              product: true,
+            },
+          },
+        },
       }) ?? null;
     return product;
   }
@@ -69,6 +84,13 @@ export class OrderRepository implements Repository {
   findAll(userId: number): Promise<Order[]> {
     return prisma.order.findMany({
       where: { userId },
+      include: {
+        OrderItem: {
+          include: {
+            product: true,
+          },
+        },
+      },
     });
   }
 }

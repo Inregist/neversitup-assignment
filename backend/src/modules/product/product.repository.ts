@@ -1,4 +1,4 @@
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import Repository from "../base/repository";
 import prisma from "../../prisma";
 import { ProductInput } from "./product.service";
@@ -10,7 +10,7 @@ export class ProductRepository implements Repository {
     });
   }
 
-  update(id: number, entity: ProductInput): Promise<Product> {
+  update(id: number, entity: Prisma.ProductUpdateInput): Promise<Product> {
     return prisma.product.update({
       where: {
         id,

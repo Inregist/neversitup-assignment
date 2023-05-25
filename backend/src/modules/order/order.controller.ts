@@ -1,6 +1,6 @@
 import { Router } from "express";
-import productService from "./order.service";
-import { number, z } from "zod";
+import orderService from "./order.service";
+import { z } from "zod";
 import { JWTRequest } from "../../middlewares/jwt";
 
 const orderRouter = Router();
@@ -8,7 +8,7 @@ const orderRouter = Router();
 orderRouter.get("/", async (req: JWTRequest, res, next) => {
   try {
     const userId = z.number().parse(req.user?.id);
-    const result = await productService.getOrderList(userId);
+    const result = await orderService.getOrderList(userId);
     res.json(result);
   } catch (error) {
     next(error);
@@ -18,8 +18,8 @@ orderRouter.get("/", async (req: JWTRequest, res, next) => {
 orderRouter.get("/:id", async (req: JWTRequest, res, next) => {
   try {
     const userId = z.number().parse(req.user?.id);
-    const id = z.number().parse(req.params.id);
-    const result = await productService.getOrder(userId, id);
+    const id = z.number().parse(+req.params.id);
+    const result = await orderService.getOrder(userId, id);
     res.json(result);
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ orderRouter.get("/:id", async (req: JWTRequest, res, next) => {
 orderRouter.post("/", async (req: JWTRequest, res, next) => {
   try {
     const userId = z.number().parse(req.user?.id);
-    const result = await productService.createOrder(userId, req.body);
+    const result = await orderService.createOrder(userId, req.body);
     res.json(result);
   } catch (error) {
     next(error);
@@ -41,8 +41,8 @@ orderRouter.put("/update-status/:id", async (req: JWTRequest, res, next) => {
     if (!req.user?.isAdmin) {
       return res.status(403).json({ error: "Unauthorized" });
     }
-    const id = z.number().parse(req.params.id);
-    const result = await productService.updateOrderStatus(id, req.body);
+    const id = z.number().parse(+req.params.id);
+    const result = await orderService.updateOrderStatus(id, req.body.status);
     res.json(result);
   } catch (error) {
     next(error);
@@ -51,9 +51,9 @@ orderRouter.put("/update-status/:id", async (req: JWTRequest, res, next) => {
 
 orderRouter.delete("/:id", async (req: JWTRequest, res, next) => {
   try {
-    const id = z.number().parse(req.params.id);
+    const id = z.number().parse(+req.params.id);
     const userId = z.number().parse(req.user?.id);
-    const result = await productService.deleteOrder(userId, id);
+    const result = await orderService.deleteOrder(userId, id);
     res.json(result);
   } catch (error) {
     next(error);

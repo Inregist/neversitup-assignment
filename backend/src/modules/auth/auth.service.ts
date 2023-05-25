@@ -31,7 +31,7 @@ class AuthService {
     const hashedPassword = await bcrypt.hash(validatedUser.data.password, salt);
 
     const user = await prisma.user.create({
-      data: { ...validatedUser.data, password: hashedPassword, salt },
+      data: { ...validatedUser.data, password: hashedPassword },
     });
 
     return {
@@ -42,9 +42,6 @@ class AuthService {
   }
 
   async login(email: string, password: string) {
-    const users = await prisma.user.findMany();
-    console.log(users);
-
     const user = await prisma.user.findFirst({
       where: { email },
     });
@@ -53,10 +50,7 @@ class AuthService {
       throw new Error("User not found");
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      password + user.salt,
-      user.password
-    );
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new Error("Invalid login");
