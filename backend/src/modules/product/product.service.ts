@@ -38,11 +38,11 @@ class ProductService {
   }
 
   async getProduct(id: number): Promise<Product | null> {
-    const existingProduct = await this.productRepository.findById(id);
+    const existingProduct = await this.productRepository.findByUserWithId(id);
     if (!existingProduct) {
       throw new Error("Product not found");
     }
-    return this.productRepository.findById(id);
+    return this.productRepository.findByUserWithId(id);
   }
 
   async getProductList(): Promise<Product[]> {

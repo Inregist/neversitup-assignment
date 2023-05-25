@@ -1,13 +1,13 @@
-interface Repository<T> {
-  create(entity: T): Promise<T>;
+interface Repository {
+  create: Function;
 
-  update(id: number | string, entity: T): Promise<T>;
+  update: Function;
 
-  delete(id: number | string): Promise<T>;
+  delete: Function;
 
-  findById(id: number | string): Promise<T>;
+  findByUserWithId: Function;
 
-  findAll(): Promise<T[]>;
+  findAll: Function;
 }
 
 export default Repository;

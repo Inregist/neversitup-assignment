@@ -3,7 +3,7 @@ import Repository from "../base/repository";
 import prisma from "../../prisma";
 import { ProductInput } from "./product.service";
 
-export class ProductRepository implements Repository<Partial<Product> | null> {
+export class ProductRepository implements Repository {
   create(entity: ProductInput): Promise<Product> {
     return prisma.product.create({
       data: entity,
@@ -25,7 +25,7 @@ export class ProductRepository implements Repository<Partial<Product> | null> {
     });
   }
 
-  findById(id: number): Promise<Product | null> {
+  findByUserWithId(id: number): Promise<Product | null> {
     const product =
       prisma.product.findUnique({
         where: { id },

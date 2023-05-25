@@ -19,6 +19,7 @@ const resolveString = (value: string | undefined, defaultValue: string) => {
 export const appConfig = () => ({
   port: resolveInt(process.env.PORT, 3001),
   hostname: resolveString(process.env.HOSTNAME, "localhost"),
+  corsOrigin: resolveString(process.env.CORS_ORIGIN, "http://localhost:3001"),
 
   jwtSecret: resolveString(process.env.JWT_SECRET, "secret"),
 });
