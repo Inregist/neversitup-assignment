@@ -8,6 +8,7 @@ export class OrderRepository implements Repository {
     return prisma.order.create({
       data: {
         ...entity,
+        status: entity.status ?? "pending",
         total: entity.total ?? 0,
       },
     });

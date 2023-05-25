@@ -10,7 +10,7 @@ export const orderInputSchema = z.object({
   id: z.number().optional(),
   userId: z.number(),
   products: z.array(orderItemInputSchema),
-  status: z.string().default("pending"),
+  status: z.string().default("pending").optional(),
   total: z.number().optional(),
 });
 export type OrderInput = z.infer<typeof orderInputSchema>;
@@ -49,6 +49,7 @@ class OrderService {
     });
 
     const createdOrderItems = await this.orderItemRepository.createMany(
+      createdOrder.id,
       products
     );
 

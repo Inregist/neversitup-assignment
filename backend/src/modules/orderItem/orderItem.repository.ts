@@ -15,9 +15,15 @@ export class OrderItemRepository implements Repository {
     });
   }
 
-  async createMany(entities: OrderItemInput[]): Promise<OrderItem[]> {
+  async createMany(
+    orderId: number,
+    entities: OrderItemInput[]
+  ): Promise<OrderItem[]> {
     await prisma.orderItem.createMany({
-      data: entities,
+      data: entities.map((entity) => ({
+        ...entity,
+        orderId,
+      })),
     });
 
     return prisma.orderItem.findMany({

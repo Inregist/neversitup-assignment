@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export const orderItemInputSchema = z.object({
   id: z.number().optional(),
-  orderId: z.number(),
+  orderId: z.number().optional(),
   productId: z.number(),
   quantity: z.number(),
   unitPrice: z.number(),

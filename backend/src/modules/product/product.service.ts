@@ -13,7 +13,7 @@ export type ProductInput = z.infer<typeof productInputSchema>;
 class ProductService {
   constructor(private readonly productRepository: ProductRepository) {}
 
-  async createProduct(product: Product): Promise<Product> {
+  async createProduct(product: ProductInput): Promise<Product> {
     const validated = productInputSchema.parse(product);
     return this.productRepository.create(validated);
   }

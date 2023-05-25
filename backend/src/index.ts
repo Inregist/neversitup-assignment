@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { appConfig } from "./config/config";
 import router from "./modules";
 import { errorHandler } from "./middlewares/errorHandler";
+import { initSeed } from "./seeds";
 
 const app = express();
 
@@ -30,6 +31,11 @@ app.use("/api", router);
 
 app.use(errorHandler);
 
-app.listen(port, hostname, 1, () => {
+app.listen(port, hostname, 1, async () => {
+  if (process.env.NODE_ENV !== "production") {
+    console.log("[server]: Seeding database...");
+    await initSeed();
+  }
+
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
